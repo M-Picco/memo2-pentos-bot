@@ -1,12 +1,13 @@
 image: ruby:2.5.1
 before_script:
-  - apt-get update -qq && apt-get install -y -qq libpq-dev cmake
+  - apt-get update -qq && apt-get install
   - ruby -v
   - which ruby
   - gem install bundler --no-ri --no-rdoc
   - bundle install --without staging production
 stages:
   - build
+  - deploy_staging
 
 job_build:
   stage: build
