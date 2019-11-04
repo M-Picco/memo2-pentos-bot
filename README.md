@@ -1,36 +1,26 @@
-Telegram Bot Example
-====================
+Job Vacancy Application - Pentos
+================================
 
-1. Registrar un nuevo bot con el BotFather de Telegram
+[![build status](https://gitlab.com/fiuba-memo2/tp2/pentos-bot/badges/master/build.svg)](https://gitlab.com/fiuba-memo2/tp2/pentos-bot/commits/master)
 
-* En Telegram https://web.telegram.org/#/im?p=@BotFather
-* Enviarle el comando `/newbot`
-* Seguir los pasos y al final el BotFather responde con un token
+## Environments
 
-2. Copiar el archivo `.env.example` a `.env` y reemplazar `<YOUR_TELEGRAM_TOKEN>` con el token del paso anterior
+- Production: Pentos LaNona Bot (@pentos_lanona_bot)
+- Staging: Pentos LaNona Bot (staging) (@pentos_lanona_staging_bot)
 
-3. Correr los tests con `rake`
+## Development team
 
-4. Levantar la app localmente con `ruby app.rb`
+- Martin Picco
+- Kevin Spasiuk
+- Edson Justo
 
-# Deploy a Heroku
+## Workflow
 
-1. Crear la app en heroku
-2. Agregar el remote `heroku git:remote -a <app_name>`
-3. Hacer deploy con `git push heroku master`
-4. Ir a los settings y agregar una nueva variable de entorno `TELEGRAM_TOKEN` con el valor del token
-5. Ir a los Dynos, editar los dynos y confirmar la activación (ver [imagen](https://www.dropbox.com/s/h2hqimu7pbsqrhj/Screenshot%202019-05-15%2021.38.07.png?dl=0))
+The project's development is guided by a simple version of [*Feature Branching Schema*](https://nvie.com/posts/a-successful-git-branching-model/).
 
-# Testing
+There are two main branches: **master** and **develop**. Each holds the source code of production and staging environments respectively.
 
-Los tests utilzan WebMock. Para testear el cliente, siempre usar `app.run_once` de lo contrario el bot se queda esperando mensajes y el test no finaliza nunca.
+We create a feature branch for user story. When the feature is completed a merge request to develop is created.
+Every merge request is reviewed and approved by at least one member of the developmet team.
 
-# Llamadas a otras API por HTTP
-
-Se puede utilizar la gema incluida en el repo [Faraday](https://github.com/lostisland/faraday#faraday)
-
-# Más información
-
-Para utilizar otras funcionalidades de Telegram como los Keyboards especiales ver la doc en: https://github.com/atipugin/telegram-bot-ruby
-
- 
+Deployments to heroku are triggered by changes on any of the main branches.
