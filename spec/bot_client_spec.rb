@@ -66,5 +66,16 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /registrar message with invalid phone and return an error message' do
+      allow(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '').and_raise('telefono invalido')
+
+      stub_get_updates(token, '/register Cucha Cucha 1234 1 Piso B@')
+      stub_send_message(token, 'registracion fallida, telefono invalido')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 end

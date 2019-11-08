@@ -14,9 +14,14 @@ class Routes
   on_message_pattern %r{\/register (?<dom>.*)@(?<tel>.*)} do |bot, message, args|
     user = message.from.username
 
-    @api_client.register(user, args['dom'], args['tel'])
+    begin
+      @api_client.register(user, args['dom'], args['tel'])
 
-    bot.api.send_message(chat_id: message.chat.id, text: 'registracion exitosa')
+      bot.api.send_message(chat_id: message.chat.id, text: 'registracion exitosa')
+    rescue StandardError => e
+      text = "registracion fallida, #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
   end
 
   on_message_pattern %r{\/register (?<text>.*)} do |bot, message, _args|
