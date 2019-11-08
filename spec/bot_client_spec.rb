@@ -32,14 +32,27 @@ def stub_send_message(token, message_text)
 end
 
 describe 'BotClient' do
-  it 'should get a /start message from an unregistered user and respond with a greeting' do
-    token = 'fake_token'
+  let(:token) { 'fake_token' }
 
-    stub_get_updates(token, '/start')
-    stub_send_message(token, "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá tu domicilio y teléfono con los comandos /domicilio y /telefono")
+  describe 'start' do
+    it 'should get a /start message from an unregistered user and respond with a greeting' do
+      stub_get_updates(token, '/start')
+      stub_send_message(token, "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá tu domicilio y teléfono con los comandos /domicilio y /telefono")
 
-    app = BotClient.new(token)
+      app = BotClient.new(token)
 
-    app.run_once
+      app.run_once
+    end
+  end
+
+  describe 'registration' do
+    it 'should get a /registrar message with valid parameters and return a success message' do
+      stub_get_updates(token, '/register Cucha Cucha 1234 1 Piso B@4123-4123')
+      stub_send_message(token, 'registracion exitosa')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end
