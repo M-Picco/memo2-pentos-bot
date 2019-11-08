@@ -54,5 +54,14 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /registrar message with only one parameter and return an invalid format message' do
+      stub_get_updates(token, '/register Cucha Cucha 1234 1 Piso B 4123-4123')
+      stub_send_message(token, 'registracion fallida, formato invalido (separar direccion y telefono con @)')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end

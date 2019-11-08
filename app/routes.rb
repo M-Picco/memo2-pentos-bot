@@ -10,4 +10,8 @@ class Routes
   on_message_pattern %r{\/register (?<dom>.*)@(?<tel>.*)} do |bot, message, _args|
     bot.api.send_message(chat_id: message.chat.id, text: 'registracion exitosa')
   end
+
+  on_message_pattern %r{\/register (?<text>.*)} do |bot, message, _args|
+    bot.api.send_message(chat_id: message.chat.id, text: 'registracion fallida, formato invalido (separar direccion y telefono con @)')
+  end
 end
