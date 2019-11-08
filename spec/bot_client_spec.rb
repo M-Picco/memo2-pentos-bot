@@ -30,3 +30,16 @@ def stub_send_message(token, message_text)
     )
     .to_return(status: 200, body: body.to_json, headers: {})
 end
+
+describe 'BotClient' do
+  it 'should get a /start message from an unregistered user and respond with a greeting' do
+    token = 'fake_token'
+
+    stub_get_updates(token, '/start')
+    stub_send_message(token, "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá tu domicilio y teléfono con los comandos /domicilio y /telefono")
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
+end
