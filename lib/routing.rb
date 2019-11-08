@@ -26,7 +26,7 @@ module Routing
     handler, named_captures = find_regex_handler_for(message) if handler.nil?
 
     if !handler.nil?
-      handler.call(bot, message, named_captures)
+      instance_exec bot, message, named_captures, &handler
     else
       (handler || default_handler(message)).call(bot, message)
     end
