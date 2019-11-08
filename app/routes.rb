@@ -11,7 +11,7 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá tu domicilio y teléfono con los comandos /domicilio y /telefono")
   end
 
-  on_message_pattern %r{\/register (?<dom>.*)@(?<tel>.*)} do |bot, message, args|
+  on_message_pattern %r{\/register (?<dom>.*),(?<tel>.*)} do |bot, message, args|
     user = message.from.username
 
     begin
@@ -25,6 +25,6 @@ class Routes
   end
 
   on_message_pattern %r{\/register (?<text>.*)} do |bot, message, _args|
-    bot.api.send_message(chat_id: message.chat.id, text: 'registracion fallida, formato invalido (separar direccion y telefono con @)')
+    bot.api.send_message(chat_id: message.chat.id, text: 'registracion fallida, formato invalido (separar direccion y telefono con ,)')
   end
 end
