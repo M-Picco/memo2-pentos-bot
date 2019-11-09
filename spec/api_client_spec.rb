@@ -16,7 +16,7 @@ def stub_success_post(url, body, ret_body)
 end
 
 def stub_failed_post(url, body, error_message)
-  stub_req(url, body.to_json, { error: error_message }.to_json, 403)
+  stub_req(url, body.to_json, { error: error_message }.to_json, 400)
 end
 
 def stub_server_error_post(url, body)
