@@ -5,11 +5,13 @@ require 'vcr_helper'
 
 require File.dirname(__FILE__) + '/../app/bot_client'
 
-def stub_get_updates(token, message_text)
+def stub_get_updates(token, message_text, null_username = false)
+  username = null_username ? nil : 'chambriento'
+
   body = { "ok": true, "result": [{ "update_id": 693_981_718,
                                     "message": { "message_id": 11,
-                                                 "from": { "id": 141_733_544, "is_bot": false, "first_name": 'Cliente', "last_name": 'Hambriento', "username": 'chambriento', "language_code": 'en' },
-                                                 "chat": { "id": 141_733_544, "first_name": 'Cliente', "last_name": 'Hambriento', "username": 'chambriento', "type": 'private' },
+                                                 "from": { "id": 141_733_544, "is_bot": false, "first_name": 'Cliente', "last_name": 'Hambriento', "username": username, "language_code": 'en' },
+                                                 "chat": { "id": 141_733_544, "first_name": 'Cliente', "last_name": 'Hambriento', "username": username, "type": 'private' },
                                                  "date": 1_557_782_998, "text": message_text,
                                                  "entities": [{ "offset": 0, "length": 6, "type": 'bot_command' }] } }] }
 
@@ -83,6 +85,17 @@ describe 'BotClient' do
 
       stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,')
       stub_send_message(token, 'registracion fallida, telefono invalido')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /registracion message with null username and return an error message' do
+      expect(api_client).to receive(:register).with('', 'Cucha Cucha 1234 1 Piso B', '4123-4123').and_raise('usuario invalido')
+
+      stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,4123-4123', null_username: true)
+      stub_send_message(token, 'registracion fallida, usuario invalido')
 
       app = BotClient.new(api_client, token)
 

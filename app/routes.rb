@@ -17,7 +17,7 @@ class Routes
   end
 
   on_message_pattern %r{\/registracion (?<dom>.*),(?<tel>.*)} do |bot, message, args|
-    user = message.from.username
+    user = message.from.username || ''
 
     begin
       @api_client.register(user, args['dom'], args['tel'])
