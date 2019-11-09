@@ -1,3 +1,5 @@
+require_relative './api_error_mapper'
+
 class ApiClient
   def initialize(api_base_url)
     @api_base_url = api_base_url
