@@ -84,8 +84,11 @@ describe 'ApiClient' do
   describe 'order' do
     it 'register client orders and obtains a order id' do
       username = 'pepito_p'
+      response = { order_id: 1 }
 
+      stub_success_post(endpoint("/client/#{username}/order"), {}, response)
       id = client.order(username)
+
       expect(id).to eq(1)
     end
   end

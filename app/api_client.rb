@@ -22,8 +22,11 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
-  def order(_username)
-    1
+  def order(username)
+    response = Faraday.post(endpoint("/client/#{username}/order"), {}.to_json, 'Content-Type' => 'application/json')
+    body = JSON.parse(response.body)
+
+    body['order_id']
   end
 
   private
