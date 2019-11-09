@@ -80,4 +80,13 @@ describe 'ApiClient' do
         .to raise_error('Error del servidor, espere y vuelva a intentarlo')
     end
   end
+
+  describe 'order' do
+    it 'register client orders and obtains a order id' do
+      username = 'pepito_p'
+
+      id = client.order(username)
+      expect(id).to eq(1)
+    end
+  end
 end

@@ -22,6 +22,10 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
+  def order(_username)
+    1
+  end
+
   private
 
   def endpoint(route)
