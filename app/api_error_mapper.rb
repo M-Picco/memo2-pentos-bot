@@ -4,7 +4,9 @@ class ApiErrorMapper
     'invalid_address' => 'Direccion invalida',
     'invalid_phone' => 'Telefono invalido',
     'server_error' => 'Error del servidor, espere y vuelva a intentarlo',
-    "can't be blank" => 'Asegurese de ingresar todos los datos correspondientes'
+    "can't be blank" => 'Asegurese de ingresar todos los datos correspondientes ' \
+                        '(Verifique username en la configuración de Telegram. ' \
+                        'Verifique que el comando fue correctamente ingresado.)'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze

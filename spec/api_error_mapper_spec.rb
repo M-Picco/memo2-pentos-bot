@@ -28,7 +28,9 @@ describe 'ApiErrorMapper' do
   it 'maps can\'t be blank to its generic counterpart' do
     mapper = ApiErrorMapper.new
 
-    expect(mapper.map("can't be blank")).to eq('Asegurese de ingresar todos los datos correspondientes')
+    expect(mapper.map("can't be blank")).to eq('Asegurese de ingresar todos los datos correspondientes ' \
+                                               '(Verifique username en la configuración de Telegram. ' \
+                                               'Verifique que el comando fue correctamente ingresado.)')
   end
 
   it 'returns a generic message when it does not know ow to map an error' do
