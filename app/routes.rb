@@ -27,4 +27,10 @@ class Routes
   on_message_pattern %r{\/registrar (?<text>.*)} do |bot, message, _args|
     bot.api.send_message(chat_id: message.chat.id, text: 'registracion fallida, formato invalido (separar direccion y telefono con ,)')
   end
+
+  default do |bot, message|
+    help_message = "Comando no reconocido. Estos son los comandos disponibles\n - /registrar {direccion},{telefono}"
+
+    bot.api.send_message(chat_id: message.chat.id, text: help_message)
+  end
 end
