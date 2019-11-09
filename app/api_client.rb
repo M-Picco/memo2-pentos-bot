@@ -14,6 +14,7 @@ class ApiClient
     body = JSON.parse(response.body)
 
     raise body['error'] if response.status == 403
+    raise 'server_error' if response.status == 500
 
     body['client_id']
   end

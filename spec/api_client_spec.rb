@@ -19,6 +19,10 @@ def stub_failed_post(url, body, error_message)
   stub_req(url, body.to_json, { error: error_message }.to_json, 403)
 end
 
+def stub_server_error_post(url, body)
+  stub_req(url, body.to_json, {}.to_json, 500)
+end
+
 describe 'ApiClient' do
   let(:base_url) { 'http://base_url' }
   let(:client) { ApiClient.new(base_url) }
@@ -58,13 +62,13 @@ describe 'ApiClient' do
         .to raise_error('invalid_phone')
     end
 
-    it 'fails to register a client due to invalid username' do
-      params = { username: '', address: 'Cucha Cucha 1234 1 Piso B', phone: '4123-4123' }
+    it 'fails to register a client due to server side error' do
+      params = { username: 'chambriento', address: 'Cucha Cucha 1234 1 Piso B', phone: '4123-4123' }
 
-      stub_failed_post(endpoint('/client'), params, 'invalid_username')
+      stub_server_error_post(endpoint('/client'), params)
 
       expect { client.register(params[:username], params[:address], params[:phone]) }
-        .to raise_error('invalid_username')
+        .to raise_error('server_error')
     end
   end
 end
