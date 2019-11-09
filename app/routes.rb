@@ -11,6 +11,10 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá /registracion {tu_domicilio},{tu_telefono}")
   end
 
+  on_message '/stop' do |bot, message|
+    bot.api.send_message(chat_id: message.chat.id, text: 'Gracias por usar el sistema de pedidos LaNona!')
+  end
+
   on_message_pattern %r{\/registracion (?<dom>.*),(?<tel>.*)} do |bot, message, args|
     user = message.from.username
 

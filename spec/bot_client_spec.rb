@@ -46,6 +46,17 @@ describe 'BotClient' do
     end
   end
 
+  describe 'stop' do
+    it 'should get a /stop message from an unregistered user and respond with a goodbye message' do
+      stub_get_updates(token, '/stop')
+      stub_send_message(token, 'Gracias por usar el sistema de pedidos LaNona!')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
+
   describe 'registration' do
     it 'should get a /registracion message with valid parameters and return a success message' do
       expect(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '4123-4123')
