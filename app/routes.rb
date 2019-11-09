@@ -5,6 +5,7 @@ class Routes
 
   def initialize(api_client)
     @api_client = api_client
+    @logger = Logger.new(STDOUT)
   end
 
   on_message '/start' do |bot, message|
@@ -23,6 +24,8 @@ class Routes
 
       bot.api.send_message(chat_id: message.chat.id, text: 'registracion exitosa')
     rescue StandardError => e
+      @logger.debug e.backtrace
+
       text = "registracion fallida, #{e}"
       bot.api.send_message(chat_id: message.chat.id, text: text)
     end
