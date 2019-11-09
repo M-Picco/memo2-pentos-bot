@@ -38,7 +38,7 @@ describe 'BotClient' do
   describe 'start' do
     it 'should get a /start message from an unregistered user and respond with a greeting' do
       stub_get_updates(token, '/start')
-      stub_send_message(token, "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá tu domicilio y teléfono con los comandos /domicilio y /telefono")
+      stub_send_message(token, "Bienvenido al sistema de pedidos LaNona! \nPara registrarse ingresá /registracion {tu_domicilio},{tu_telefono}")
 
       app = BotClient.new(api_client, token)
 
