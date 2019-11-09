@@ -6,7 +6,13 @@ class ApiErrorMapper
     'server_error' => 'error del servidor, espere y vuelva a intentarlo'
   }.freeze
 
+  GENERIC_MESSAGE = 'error inesperado, espere y vuelva a intentarlo'.freeze
+
   def map(error)
-    ERRORS[error]
+    if ERRORS.key?(error)
+      ERRORS[error]
+    else
+      GENERIC_MESSAGE
+    end
   end
 end

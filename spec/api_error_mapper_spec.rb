@@ -24,4 +24,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('server_error')).to eq('error del servidor, espere y vuelva a intentarlo')
   end
+
+  it 'returns a generic message when it does not know ow to map an error' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('not_known_error')).to eq('error inesperado, espere y vuelva a intentarlo')
+  end
 end
