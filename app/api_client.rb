@@ -11,8 +11,10 @@ class ApiClient
     }
 
     response = Faraday.post(endpoint('/client'), params.to_json, 'Content-Type' => 'application/json')
-
     body = JSON.parse(response.body)
+
+    raise body['error'] if response.status == 403
+
     body['client_id']
   end
 
