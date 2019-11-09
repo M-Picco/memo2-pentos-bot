@@ -112,5 +112,16 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /registracion message with valid parameters, trim them and return a success message' do
+      expect(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '4123-4123')
+
+      stub_get_updates(token, '/registracion   Cucha Cucha 1234 1 Piso B  ,  4123-4123  ')
+      stub_send_message(token, 'Registracion exitosa')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 end

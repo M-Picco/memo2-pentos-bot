@@ -20,7 +20,7 @@ class Routes
     user = message.from.username || ''
 
     begin
-      @api_client.register(user, args['dom'], args['tel'])
+      @api_client.register(user, args['dom'].strip, args['tel'].strip)
 
       bot.api.send_message(chat_id: message.chat.id, text: 'Registracion exitosa')
     rescue StandardError => e
