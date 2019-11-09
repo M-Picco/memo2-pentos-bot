@@ -47,10 +47,10 @@ describe 'BotClient' do
   end
 
   describe 'registration' do
-    it 'should get a /registrar message with valid parameters and return a success message' do
+    it 'should get a /registracion message with valid parameters and return a success message' do
       expect(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '4123-4123')
 
-      stub_get_updates(token, '/registrar Cucha Cucha 1234 1 Piso B,4123-4123')
+      stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,4123-4123')
       stub_send_message(token, 'registracion exitosa')
 
       app = BotClient.new(api_client, token)
@@ -58,8 +58,8 @@ describe 'BotClient' do
       app.run_once
     end
 
-    it 'should get a /registrar message with only one parameter and return an invalid format message' do
-      stub_get_updates(token, '/registrar Cucha Cucha 1234 1 Piso B 4123-4123')
+    it 'should get a /registracion message with only one parameter and return an invalid format message' do
+      stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B 4123-4123')
       stub_send_message(token, 'registracion fallida, formato invalido (separar direccion y telefono con ,)')
 
       app = BotClient.new(api_client, token)
@@ -67,10 +67,10 @@ describe 'BotClient' do
       app.run_once
     end
 
-    it 'should get a /registrar message with invalid phone and return an error message' do
+    it 'should get a /registracion message with invalid phone and return an error message' do
       allow(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '').and_raise('telefono invalido')
 
-      stub_get_updates(token, '/registrar Cucha Cucha 1234 1 Piso B,')
+      stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,')
       stub_send_message(token, 'registracion fallida, telefono invalido')
 
       app = BotClient.new(api_client, token)
@@ -78,10 +78,10 @@ describe 'BotClient' do
       app.run_once
     end
 
-    it 'should get a /registrar message with invalid address and return an error message' do
+    it 'should get a /registracion message with invalid address and return an error message' do
       allow(api_client).to receive(:register).with('chambriento', '', '4123-4123').and_raise('direccion invalida')
 
-      stub_get_updates(token, '/registrar ,4123-4123')
+      stub_get_updates(token, '/registracion ,4123-4123')
       stub_send_message(token, 'registracion fallida, direccion invalida')
 
       app = BotClient.new(api_client, token)
