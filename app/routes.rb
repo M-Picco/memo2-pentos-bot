@@ -22,17 +22,17 @@ class Routes
     begin
       @api_client.register(user, args['dom'], args['tel'])
 
-      bot.api.send_message(chat_id: message.chat.id, text: 'registracion exitosa')
+      bot.api.send_message(chat_id: message.chat.id, text: 'Registracion exitosa')
     rescue StandardError => e
       @logger.debug e.backtrace
 
-      text = "registracion fallida, #{e}"
+      text = "Registracion fallida: #{e}"
       bot.api.send_message(chat_id: message.chat.id, text: text)
     end
   end
 
   on_message_pattern %r{\/registracion (?<text>.*)} do |bot, message, _args|
-    bot.api.send_message(chat_id: message.chat.id, text: 'registracion fallida, formato invalido (separar direccion y telefono con ,)')
+    bot.api.send_message(chat_id: message.chat.id, text: 'Registracion fallida: Formato invalido (separar direccion y telefono con ,)')
   end
 
   default do |bot, message|

@@ -64,7 +64,7 @@ describe 'BotClient' do
       expect(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '4123-4123')
 
       stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,4123-4123')
-      stub_send_message(token, 'registracion exitosa')
+      stub_send_message(token, 'Registracion exitosa')
 
       app = BotClient.new(api_client, token)
 
@@ -73,7 +73,7 @@ describe 'BotClient' do
 
     it 'should get a /registracion message with only one parameter and return an invalid format message' do
       stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B 4123-4123')
-      stub_send_message(token, 'registracion fallida, formato invalido (separar direccion y telefono con ,)')
+      stub_send_message(token, 'Registracion fallida: Formato invalido (separar direccion y telefono con ,)')
 
       app = BotClient.new(api_client, token)
 
@@ -81,10 +81,10 @@ describe 'BotClient' do
     end
 
     it 'should get a /registracion message with invalid phone and return an error message' do
-      allow(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '').and_raise('telefono invalido')
+      allow(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '').and_raise('Telefono invalido')
 
       stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,')
-      stub_send_message(token, 'registracion fallida, telefono invalido')
+      stub_send_message(token, 'Registracion fallida: Telefono invalido')
 
       app = BotClient.new(api_client, token)
 
@@ -92,10 +92,10 @@ describe 'BotClient' do
     end
 
     it 'should get a /registracion message with null username and return an error message' do
-      expect(api_client).to receive(:register).with('', 'Cucha Cucha 1234 1 Piso B', '4123-4123').and_raise('usuario invalido')
+      expect(api_client).to receive(:register).with('', 'Cucha Cucha 1234 1 Piso B', '4123-4123').and_raise('Usuario invalido')
 
       stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,4123-4123', null_username: true)
-      stub_send_message(token, 'registracion fallida, usuario invalido')
+      stub_send_message(token, 'Registracion fallida: Usuario invalido')
 
       app = BotClient.new(api_client, token)
 
@@ -103,10 +103,10 @@ describe 'BotClient' do
     end
 
     it 'should get a /registracion message with invalid address and return an error message' do
-      allow(api_client).to receive(:register).with('chambriento', '', '4123-4123').and_raise('direccion invalida')
+      allow(api_client).to receive(:register).with('chambriento', '', '4123-4123').and_raise('Direccion invalida')
 
       stub_get_updates(token, '/registracion ,4123-4123')
-      stub_send_message(token, 'registracion fallida, direccion invalida')
+      stub_send_message(token, 'Registracion fallida: Direccion invalida')
 
       app = BotClient.new(api_client, token)
 
