@@ -12,4 +12,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('invalid_address')).to eq('direccion invalida')
   end
+
+  it 'maps invalid_phone error to its counterparts' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('invalid_phone')).to eq('telefono invalido')
+  end
 end
