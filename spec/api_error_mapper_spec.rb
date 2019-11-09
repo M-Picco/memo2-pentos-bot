@@ -25,6 +25,12 @@ describe 'ApiErrorMapper' do
     expect(mapper.map('server_error')).to eq('error del servidor, espere y vuelva a intentarlo')
   end
 
+  it 'maps can\'t be blank to its generic counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map("can't be blank")).to eq('asegurese de ingresar todos los datos correspondientes')
+  end
+
   it 'returns a generic message when it does not know ow to map an error' do
     mapper = ApiErrorMapper.new
 
