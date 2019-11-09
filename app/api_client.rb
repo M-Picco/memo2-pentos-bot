@@ -17,9 +17,9 @@ class ApiClient
     body = JSON.parse(response.body)
 
     return body['client_id'] if response.status == 200
-    raise StandardError, @error_mapper.map(body['error']) if response.status == 400
+    raise @error_mapper.map(body['error']) if response.status == 400
 
-    raise StandardError, @error_mapper.map('server_error')
+    raise @error_mapper.map('server_error')
   end
 
   private
