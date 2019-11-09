@@ -6,4 +6,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('invalid_username')).to eq('usuario invalido')
   end
+
+  it 'maps invalid_address error to its counterparts' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('invalid_address')).to eq('direccion invalida')
+  end
 end
