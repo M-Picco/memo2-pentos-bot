@@ -1,7 +1,24 @@
 class ApiClient
-  def initialize(_api_base_url); end
+  def initialize(api_base_url)
+    @api_base_url = api_base_url
+  end
 
-  def register(_username, _address, _phone)
-    1
+  def register(username, address, phone)
+    params = {
+      username: username,
+      address: address,
+      phone: phone
+    }
+
+    response = Faraday.post(endpoint('/client'), params.to_json, 'Content-Type' => 'application/json')
+
+    body = JSON.parse(response.body)
+    body['client_id']
+  end
+
+  private
+
+  def endpoint(route)
+    "#{@api_base_url}#{route}"
   end
 end
