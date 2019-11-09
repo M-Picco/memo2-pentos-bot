@@ -48,5 +48,14 @@ describe 'ApiClient' do
       expect { client.register(params[:username], params[:address], params[:phone]) }
         .to raise_error('invalid_address')
     end
+
+    it 'fails to register a client due to invalid phone' do
+      params = { username: 'chambriento', address: 'Cucha Cucha 1234 1 Piso B', phone: '' }
+
+      stub_failed_post(endpoint('/client'), params, 'invalid_phone')
+
+      expect { client.register(params[:username], params[:address], params[:phone]) }
+        .to raise_error('invalid_phone')
+    end
   end
 end
