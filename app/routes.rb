@@ -36,7 +36,17 @@ class Routes
   end
 
   on_message '/pedido' do |bot, message|
-    bot.api.send_message(chat_id: message.chat.id, text: 'Su pedido ha sido recibido, su numero es: N')
+    user = message.from.username || ''
+
+    begin
+      order_id = @api_client.order(user)
+      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido ha sido recibido, su numero es: #{order_id}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      text = "Pedido fallido: #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
   end
 
   default do |bot, message|
