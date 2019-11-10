@@ -112,7 +112,7 @@ describe 'ApiClient' do
     end
 
     # rubocop:disable RSpec/ExampleLength
-    it 'registered client ask for order id status and obtains "RECIBIDO"' do
+    it 'registered client ask for order id status and obtains "ha sido RECIBIDO"' do
       username = 'pepito_p'
       order_id = 1
       response = { order_status: 'recibido' }
@@ -122,6 +122,18 @@ describe 'ApiClient' do
       order_status = client.order_status(username, order_id)
 
       expect(order_status).to eq('ha sido RECIBIDO')
+    end
+
+    it 'registered client ask for order id status and obtains "esta EN PREPARACION"' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { order_status: 'en_preparacion' }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      order_status = client.order_status(username, order_id)
+
+      expect(order_status).to eq('esta EN PREPARACION')
     end
     # rubocop:enable RSpec/ExampleLength
 
