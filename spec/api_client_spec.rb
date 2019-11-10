@@ -100,5 +100,19 @@ describe 'ApiClient' do
       expect { client.order(username) }
         .to raise_error('Error del servidor, espere y vuelva a intentarlo')
     end
+
+    # rubocop:disable RSpec/ExampleLength
+    it 'registered client ask for order id status and obtains "Recibida"' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { order_status: 'Recibida' }
+
+      stub_success_post(endpoint("/client/#{username}/order/#{order_id}"), {}, response)
+
+      order_status = client.order_status(username, order_id)
+
+      expect(order_status).to eq('Recibida')
+    end
+    # rubocop:enable RSpec/ExampleLength
   end
 end
