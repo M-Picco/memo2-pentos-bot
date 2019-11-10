@@ -1,8 +1,8 @@
 class ApiErrorMapper
   ERRORS = {
-    'invalid_username' => 'Usuario invalido',
-    'invalid_address' => 'Direccion invalida',
-    'invalid_phone' => 'Telefono invalido',
+    'invalid_username' => 'Usuario inválido',
+    'invalid_address' => 'Dirección inválida',
+    'invalid_phone' => 'Teléfono inválido',
     'server_error' => 'Error del servidor, espere y vuelva a intentarlo',
     "can't be blank" => 'Asegurese de ingresar todos los datos correspondientes ' \
                         '(Verifique username en la configuración de Telegram. ' \

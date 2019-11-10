@@ -60,7 +60,7 @@ describe 'ApiClient' do
       stub_failed_post(endpoint('/client'), params, 'invalid_address')
 
       expect { client.register(params[:username], params[:address], params[:phone]) }
-        .to raise_error('Direccion invalida')
+        .to raise_error('Dirección inválida')
     end
 
     it 'fails to register a client due to invalid phone' do
@@ -69,7 +69,7 @@ describe 'ApiClient' do
       stub_failed_post(endpoint('/client'), params, 'invalid_phone')
 
       expect { client.register(params[:username], params[:address], params[:phone]) }
-        .to raise_error('Telefono invalido')
+        .to raise_error('Teléfono inválido')
     end
 
     it 'fails to register a client due to invalid username' do
@@ -78,7 +78,7 @@ describe 'ApiClient' do
       stub_failed_post(endpoint('/client'), params, 'invalid_username')
 
       expect { client.register(params[:username], params[:address], params[:phone]) }
-        .to raise_error('Usuario invalido')
+        .to raise_error('Usuario inválido')
     end
 
     it 'fails to register a client due to server side error' do
