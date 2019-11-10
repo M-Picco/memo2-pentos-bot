@@ -4,19 +4,19 @@ describe 'ApiErrorMapper' do
   it 'maps invalid_username error to its counterparts' do
     mapper = ApiErrorMapper.new
 
-    expect(mapper.map('invalid_username')).to eq('Usuario invalido')
+    expect(mapper.map('invalid_username')).to eq('Usuario inválido')
   end
 
   it 'maps invalid_address error to its counterparts' do
     mapper = ApiErrorMapper.new
 
-    expect(mapper.map('invalid_address')).to eq('Direccion invalida')
+    expect(mapper.map('invalid_address')).to eq('Dirección inválida')
   end
 
   it 'maps invalid_phone error to its counterparts' do
     mapper = ApiErrorMapper.new
 
-    expect(mapper.map('invalid_phone')).to eq('Telefono invalido')
+    expect(mapper.map('invalid_phone')).to eq('Teléfono inválido')
   end
 
   it 'maps server_error error to its counterparts' do
