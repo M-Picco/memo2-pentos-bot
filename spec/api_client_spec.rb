@@ -11,6 +11,11 @@ def stub_req(url, body, ret_body, code)
     .to_return(body: ret_body, status: code)
 end
 
+def stub_success_get(url, ret_body)
+  stub_request(:get, url)
+    .to_return(body: ret_body.to_json, status: 200)
+end
+
 def stub_success_post(url, body, ret_body)
   stub_req(url, body.to_json, ret_body.to_json, 200)
 end
@@ -102,16 +107,16 @@ describe 'ApiClient' do
     end
 
     # rubocop:disable RSpec/ExampleLength
-    it 'registered client ask for order id status and obtains "Recibida"' do
+    it 'registered client ask for order id status and obtains "RECIBIDO"' do
       username = 'pepito_p'
       order_id = 1
-      response = { order_status: 'Recibida' }
+      response = { order_status: 'RECIBIDO' }
 
-      stub_success_post(endpoint("/client/#{username}/order/#{order_id}"), {}, response)
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
 
       order_status = client.order_status(username, order_id)
 
-      expect(order_status).to eq('Recibida')
+      expect(order_status).to eq('RECIBIDO')
     end
     # rubocop:enable RSpec/ExampleLength
   end

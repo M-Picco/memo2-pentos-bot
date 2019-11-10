@@ -137,4 +137,17 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  describe 'status' do
+    it 'should get a /estado message from a registered user and respond with a success message' do
+      expect(api_client).to receive(:order_status).with('chambriento', 1).and_return('RECIBIDO')
+
+      stub_get_updates(token, '/estado 1')
+      stub_send_message(token, 'Su pedido 1 ha sido RECIBIDO')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
 end

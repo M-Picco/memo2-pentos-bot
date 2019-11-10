@@ -32,7 +32,7 @@ class ApiClient
   end
 
   def order_status(username, order_id)
-    response = Faraday.post(endpoint("/client/#{username}/order/#{order_id}"), {}.to_json, 'Content-Type' => 'application/json')
+    response = Faraday.get endpoint("/client/#{username}/order/#{order_id}")
     body = JSON.parse(response.body)
 
     return body['order_status'] if response.status == 200
