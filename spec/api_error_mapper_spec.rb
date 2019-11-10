@@ -33,6 +33,12 @@ describe 'ApiErrorMapper' do
                                                'Verifique que el comando fue correctamente ingresado.)')
   end
 
+  it 'maps order not exist to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('order not exist')).to eq('El pedido indicado no existe')
+  end
+
   it 'returns a generic message when it does not know ow to map an error' do
     mapper = ApiErrorMapper.new
 
