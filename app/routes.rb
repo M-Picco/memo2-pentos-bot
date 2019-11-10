@@ -52,8 +52,15 @@ class Routes
   on_message_pattern %r{\/estado (?<id_pedido>.*)} do |bot, message, args|
     user = message.from.username || ''
 
-    status = @api_client.order_status(user, args['id_pedido'].strip.to_i)
-    bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} ha sido #{status}")
+    begin
+      status = @api_client.order_status(user, args['id_pedido'].strip.to_i)
+      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} ha sido #{status}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      text = "Consulta fallida: #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
   end
 
   default do |bot, message|
