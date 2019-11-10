@@ -115,13 +115,13 @@ describe 'ApiClient' do
     it 'registered client ask for order id status and obtains "RECIBIDO"' do
       username = 'pepito_p'
       order_id = 1
-      response = { order_status: 'RECIBIDO' }
+      response = { order_status: 'recibido' }
 
       stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
 
       order_status = client.order_status(username, order_id)
 
-      expect(order_status).to eq('RECIBIDO')
+      expect(order_status).to eq('ha sido RECIBIDO')
     end
     # rubocop:enable RSpec/ExampleLength
 

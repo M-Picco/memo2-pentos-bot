@@ -54,7 +54,7 @@ class Routes
 
     begin
       status = @api_client.order_status(user, args['id_pedido'].strip.to_i)
-      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} ha sido #{status}")
+      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} #{status}")
     rescue StandardError => e
       @logger.debug e.backtrace
 
