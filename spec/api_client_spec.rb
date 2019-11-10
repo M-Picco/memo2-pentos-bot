@@ -11,6 +11,16 @@ def stub_req(url, body, ret_body, code)
     .to_return(body: ret_body, status: code)
 end
 
+def stub_success_get(url, ret_body)
+  stub_request(:get, url)
+    .to_return(body: ret_body.to_json, status: 200)
+end
+
+def stub_failed_get(url, error_message)
+  stub_request(:get, url)
+    .to_return(body: { error: error_message }.to_json, status: 400)
+end
+
 def stub_success_post(url, body, ret_body)
   stub_req(url, body.to_json, ret_body.to_json, 200)
 end
@@ -99,6 +109,42 @@ describe 'ApiClient' do
 
       expect { client.order(username) }
         .to raise_error('Error del servidor, espere y vuelva a intentarlo')
+    end
+
+    # rubocop:disable RSpec/ExampleLength
+    it 'registered client ask for order id status and obtains "ha sido RECIBIDO"' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { order_status: 'recibido' }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      order_status = client.order_status(username, order_id)
+
+      expect(order_status).to eq('ha sido RECIBIDO')
+    end
+
+    it 'registered client ask for order id status and obtains "esta EN PREPARACION"' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { order_status: 'en_preparacion' }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      order_status = client.order_status(username, order_id)
+
+      expect(order_status).to eq('esta EN PREPARACION')
+    end
+    # rubocop:enable RSpec/ExampleLength
+
+    it 'registered client ask for non existent order id status and fails' do
+      username = 'pepito_p'
+      order_id = 500
+
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'order not exist')
+
+      expect { client.order_status(username, order_id) }
+        .to raise_error('El pedido indicado no existe')
     end
   end
 end

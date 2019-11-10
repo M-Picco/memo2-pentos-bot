@@ -49,6 +49,20 @@ class Routes
     end
   end
 
+  on_message_pattern %r{\/estado (?<id_pedido>.*)} do |bot, message, args|
+    user = message.from.username || ''
+
+    begin
+      status = @api_client.order_status(user, args['id_pedido'].strip.to_i)
+      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} #{status}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      text = "Consulta fallida: #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
+  end
+
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n - /registracion {direccion},{telefono}\n - /pedido"
 
