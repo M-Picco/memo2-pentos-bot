@@ -35,8 +35,22 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: 'Registracion fallida: Formato invalido (separar direccion y telefono con ,)')
   end
 
+  on_message '/pedido' do |bot, message|
+    user = message.from.username || ''
+
+    begin
+      order_id = @api_client.order(user)
+      bot.api.send_message(chat_id: message.chat.id, text: "Su pedido ha sido recibido, su numero es: #{order_id}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      text = "Pedido fallido: #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
+  end
+
   default do |bot, message|
-    help_message = "Comando no reconocido. Estos son los comandos disponibles\n - /registracion {direccion},{telefono}"
+    help_message = "Comando no reconocido. Estos son los comandos disponibles\n - /registracion {direccion},{telefono}\n - /pedido"
 
     bot.api.send_message(chat_id: message.chat.id, text: help_message)
   end

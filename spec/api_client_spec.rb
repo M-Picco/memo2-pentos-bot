@@ -80,4 +80,25 @@ describe 'ApiClient' do
         .to raise_error('Error del servidor, espere y vuelva a intentarlo')
     end
   end
+
+  describe 'order' do
+    it 'register client orders and obtains a order id' do
+      username = 'pepito_p'
+      response = { order_id: 1 }
+
+      stub_success_post(endpoint("/client/#{username}/order"), {}, response)
+      id = client.order(username)
+
+      expect(id).to eq(1)
+    end
+
+    it 'fails to order due to server side error' do
+      username = 'pepito_p'
+
+      stub_server_error_post(endpoint("/client/#{username}/order"), {})
+
+      expect { client.order(username) }
+        .to raise_error('Error del servidor, espere y vuelva a intentarlo')
+    end
+  end
 end
