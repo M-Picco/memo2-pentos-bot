@@ -7,7 +7,8 @@ class ApiErrorMapper
     "can't be blank" => 'Asegurese de ingresar todos los datos correspondientes ' \
                         '(Verifique username en la configuración de Telegram. ' \
                         'Verifique que el comando fue correctamente ingresado.)',
-    'order not exist' => 'El pedido indicado no existe'
+    'order not exist' => 'El pedido indicado no existe',
+    'there are no orders' => 'Todavía no has realizado pedidos'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze
