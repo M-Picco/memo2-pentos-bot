@@ -66,7 +66,8 @@ class Routes
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n
-    - /pedido\n -/estado {nro_pedido}"
+    - /pedido\n
+    -/estado {nro_pedido}"
 
     bot.api.send_message(chat_id: message.chat.id, text: help_message)
   end
