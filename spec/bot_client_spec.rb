@@ -203,4 +203,23 @@ describe 'BotClient' do
     end
     # rubocop:enable RSpec/ExampleLength:
   end
+
+  describe 'default message' do
+    # rubocop:disable RSpec/ExampleLength:
+    it 'responds with a help message when no valid commands supplied' do
+      help_message = "Comando no reconocido. Estos son los comandos disponibles\n
+    - /registracion {dirección},{teléfono}\n
+    - /pedido\n -/estado {nro_pedido}\n
+    - /estado {nro_pedido}\n
+    - /calificar {nro_pedido} {calificación}"
+
+      stub_get_updates(token, '/un_comando_invalido')
+      stub_send_message(token, help_message)
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
 end
