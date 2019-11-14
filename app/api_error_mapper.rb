@@ -8,7 +8,8 @@ class ApiErrorMapper
                         '(Verifique username en la configuración de Telegram. ' \
                         'Verifique que el comando fue correctamente ingresado.)',
     'order not exist' => 'El pedido indicado no existe',
-    'there are no orders' => 'Todavía no has realizado pedidos'
+    'there are no orders' => 'Todavía no has realizado pedidos',
+    'order_not_delivered' => 'El pedido solo puede calificarse una vez ENTREGADO'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze

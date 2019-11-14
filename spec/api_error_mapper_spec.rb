@@ -44,4 +44,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('not_known_error')).to eq('Error inesperado, espere y vuelva a intentarlo')
   end
+
+  it 'maps order_not_delivered to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('order_not_delivered')).to eq('El pedido solo puede calificarse una vez ENTREGADO')
+  end
 end
