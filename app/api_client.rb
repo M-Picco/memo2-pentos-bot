@@ -42,6 +42,19 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
+  def order_rate(username, order_id, rating)
+    params = {
+      rating: rating
+    }
+
+    response = Faraday.post(endpoint("/client/#{username}/order/#{order_id}/rate"),
+                            params.to_json, 'Content-Type' => 'application/json')
+
+    body = JSON.parse(response.body)
+
+    body['rating']
+  end
+
   private
 
   def endpoint(route)
