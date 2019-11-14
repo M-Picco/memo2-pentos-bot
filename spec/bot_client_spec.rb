@@ -188,6 +188,19 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /calificar message from a registered user for an order not in delivered state
+        and respond with an error message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, 4)
+                                                .and_raise('El pedido solo puede calificarse una vez ENTREGADO')
+
+      stub_get_updates(token, '/calificar 10 4')
+      stub_send_message(token, 'El pedido solo puede calificarse una vez ENTREGADO')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
     # rubocop:enable RSpec/ExampleLength:
   end
 end
