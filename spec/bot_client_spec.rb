@@ -173,5 +173,21 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    # rubocop:disable RSpec/ExampleLength:
+    it 'should get a /calificar message from a registered user with an invalid rating
+        and respond with an error message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, -1)
+                                                .and_raise("La calificación '-1' no es válida" \
+                                                           ', ingresa un número entre 1 y 5')
+
+      stub_get_updates(token, '/calificar 10 -1')
+      stub_send_message(token, "La calificación '-1' no es válida, ingresa un número entre 1 y 5")
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
   end
 end
