@@ -187,6 +187,18 @@ describe 'ApiClient' do
       expect { client.order_rate(username, order_id, params[:rating]) }
         .to raise_error('El pedido solo puede calificarse una vez ENTREGADO')
     end
+
+    it 'fails to rate an order due to invalid rating' do
+      username = 'pepito_p'
+      order_id = 2
+
+      params = { rating: -14 }
+
+      stub_failed_post(endpoint("/client/#{username}/order/#{order_id}/rate"), params, 'invalid_rating')
+
+      expect { client.order_rate(username, order_id, params[:rating]) }
+        .to raise_error("La calificación '-14' no es válida, ingresa un número entre 1 y 5")
+    end
     # rubocop:enable RSpec/ExampleLength:
   end
 end
