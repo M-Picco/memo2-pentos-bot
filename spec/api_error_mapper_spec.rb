@@ -50,4 +50,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('order_not_delivered')).to eq('El pedido solo puede calificarse una vez ENTREGADO')
   end
+
+  it 'maps invalid_rating to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('invalid_rating', [-3])).to eq("La calificación '-3' no es válida, ingresa un número entre 1 y 5")
+  end
 end
