@@ -161,4 +161,17 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  describe 'rate' do
+    it 'should get a /calificar message from a registered user and respond with a success message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, 4).and_return('Su pedido N ha sido calificado exitosamente')
+
+      stub_get_updates(token, '/calificar 10 4')
+      stub_send_message(token, 'Su pedido 10 ha sido calificado exitosamente')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
 end

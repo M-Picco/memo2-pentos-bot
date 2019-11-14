@@ -63,6 +63,13 @@ class Routes
     end
   end
 
+  on_message_pattern %r{\/calificar (?<id_pedido>.*) (?<calificacion>.*)} do |bot, message, args|
+    user = message.from.username || ''
+
+    @api_client.order_rate(user, args['id_pedido'].strip.to_i, args['calificacion'].strip.to_i)
+    bot.api.send_message(chat_id: message.chat.id, text: "Su pedido #{args['id_pedido']} ha sido calificado exitosamente")
+  end
+
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n
