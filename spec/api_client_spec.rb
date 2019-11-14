@@ -175,6 +175,18 @@ describe 'ApiClient' do
 
       expect(res).to eq(4)
     end
+
+    it 'fails to rate an undelivered order' do
+      username = 'pepito_p'
+      order_id = 2
+
+      params = { rating: 4 }
+
+      stub_failed_post(endpoint("/client/#{username}/order/#{order_id}/rate"), params, 'order_not_delivered')
+
+      expect { client.order_rate(username, order_id, params[:rating]) }
+        .to raise_error('El pedido solo puede calificarse una vez ENTREGADO')
+    end
     # rubocop:enable RSpec/ExampleLength:
   end
 end
