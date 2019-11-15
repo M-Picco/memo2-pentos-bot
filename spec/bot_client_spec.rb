@@ -136,6 +136,20 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    # rubocop:disable RSpec/ExampleLength
+    it 'should get a /pedido message for an invalid menu from a registered user
+        and respond with a success message' do
+      expect(api_client).to receive(:order).with('chambriento', 'menu_ejecutivo').and_raise('Menú inválido')
+
+      stub_get_updates(token, '/pedido menu_ejecutivo')
+      stub_send_message(token, 'Pedido fallido: Menú inválido')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength
   end
 
   describe 'status' do
