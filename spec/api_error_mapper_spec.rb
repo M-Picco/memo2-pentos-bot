@@ -56,4 +56,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('invalid_rating', [-3])).to eq("La calificación '-3' no es válida, ingresa un número entre 1 y 5")
   end
+
+  it 'maps invalid_menu to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('invalid_menu')).to eq('Menú inválido')
+  end
 end
