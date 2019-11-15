@@ -10,7 +10,8 @@ class ApiErrorMapper
     'order not exist' => 'El pedido indicado no existe',
     'there are no orders' => 'Todavía no has realizado pedidos',
     'order_not_delivered' => 'El pedido solo puede calificarse una vez ENTREGADO',
-    'invalid_rating' => "La calificación '%s' no es válida, ingresa un número entre 1 y 5"
+    'invalid_rating' => "La calificación '%s' no es válida, ingresa un número entre 1 y 5",
+    'invalid_menu' => 'Menú inválido'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze

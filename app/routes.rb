@@ -35,11 +35,11 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: 'Registración fallida: Formato inválido (separar dirección y teléfono con ,)')
   end
 
-  on_message '/pedido' do |bot, message|
+  on_message_pattern %r{\/pedido (?<menu>.*)} do |bot, message, args|
     user = message.from.username || ''
 
     begin
-      order_id = @api_client.order(user)
+      order_id = @api_client.order(user, args['menu'])
       bot.api.send_message(chat_id: message.chat.id, text: "Su pedido ha sido recibido, su número es: #{order_id}")
     rescue StandardError => e
       @logger.debug e.backtrace

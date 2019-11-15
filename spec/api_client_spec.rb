@@ -92,23 +92,36 @@ describe 'ApiClient' do
   end
 
   describe 'order' do
+    # rubocop:disable RSpec/ExampleLength
     it 'register client orders and obtains a order id' do
       username = 'pepito_p'
+      params = { order: 'menu_individual' }
       response = { order_id: 1 }
 
-      stub_success_post(endpoint("/client/#{username}/order"), {}, response)
-      id = client.order(username)
+      stub_success_post(endpoint("/client/#{username}/order"), params, response)
+      id = client.order(username, params[:order])
 
       expect(id).to eq(1)
     end
+    # rubocop:enable RSpec/ExampleLength
 
     it 'fails to order due to server side error' do
       username = 'pepito_p'
+      params = { order: 'menu_individual' }
 
-      stub_server_error_post(endpoint("/client/#{username}/order"), {})
+      stub_server_error_post(endpoint("/client/#{username}/order"), params)
 
-      expect { client.order(username) }
+      expect { client.order(username, params[:order]) }
         .to raise_error('Error del servidor, espere y vuelva a intentarlo')
+    end
+    it 'registered client orders an invalid menu' do
+      username = 'pepito_p'
+      params = { order: 'menu_individual' }
+
+      stub_failed_post(endpoint("/client/#{username}/order"), params, 'invalid_menu')
+
+      expect { client.order(username, params[:order]) }
+        .to raise_error('Menú inválido')
     end
   end
 
