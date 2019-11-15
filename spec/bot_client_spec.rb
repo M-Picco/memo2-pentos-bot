@@ -127,9 +127,9 @@ describe 'BotClient' do
 
   describe 'order' do
     it 'should get a /pedido message from a registered user and respond with a success message' do
-      expect(api_client).to receive(:order).with('chambriento').and_return(1)
+      expect(api_client).to receive(:order).with('chambriento', 'menu_pareja').and_return(1)
 
-      stub_get_updates(token, '/pedido')
+      stub_get_updates(token, '/pedido menu_pareja')
       stub_send_message(token, 'Su pedido ha sido recibido, su número es: 1')
 
       app = BotClient.new(api_client, token)
