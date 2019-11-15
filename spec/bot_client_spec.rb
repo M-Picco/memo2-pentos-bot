@@ -161,4 +161,65 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  describe 'rate' do
+    it 'should get a /calificar message from a registered user and respond with a success message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, 4).and_return('Su pedido N ha sido calificado exitosamente')
+
+      stub_get_updates(token, '/calificar 10 4')
+      stub_send_message(token, 'Su pedido 10 ha sido calificado exitosamente')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    # rubocop:disable RSpec/ExampleLength:
+    it 'should get a /calificar message from a registered user with an invalid rating
+        and respond with an error message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, -1)
+                                                .and_raise("La calificación '-1' no es válida" \
+                                                           ', ingresa un número entre 1 y 5')
+
+      stub_get_updates(token, '/calificar 10 -1')
+      stub_send_message(token, "La calificación '-1' no es válida, ingresa un número entre 1 y 5")
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /calificar message from a registered user for an order not in delivered state
+        and respond with an error message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, 4)
+                                                .and_raise('El pedido solo puede calificarse una vez ENTREGADO')
+
+      stub_get_updates(token, '/calificar 10 4')
+      stub_send_message(token, 'El pedido solo puede calificarse una vez ENTREGADO')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
+
+  describe 'default message' do
+    # rubocop:disable RSpec/ExampleLength:
+    it 'responds with a help message when no valid commands supplied' do
+      help_message = "Comando no reconocido. Estos son los comandos disponibles\n
+    - /registracion {dirección},{teléfono}\n
+    - /pedido\n -/estado {nro_pedido}\n
+    - /estado {nro_pedido}\n
+    - /calificar {nro_pedido} {calificación}"
+
+      stub_get_updates(token, '/un_comando_invalido')
+      stub_send_message(token, help_message)
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
 end
