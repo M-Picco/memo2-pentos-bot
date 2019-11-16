@@ -79,7 +79,9 @@ class Routes
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n
-    - /pedido\n -/estado {nro_pedido}\n
+    - /pedido {tipo_menu}\n
+    Pedidos disponibles: menu_individual, menu_pareja y menu_familiar\n
+    -/estado {nro_pedido}\n
     - /estado {nro_pedido}\n
     - /calificar {nro_pedido} {calificación}"
 
