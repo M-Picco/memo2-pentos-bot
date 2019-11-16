@@ -116,12 +116,22 @@ describe 'ApiClient' do
     end
     it 'registered client orders an invalid menu' do
       username = 'pepito_p'
-      params = { order: 'menu_individual' }
+      params = { order: 'menu_ejecutivo' }
 
       stub_failed_post(endpoint("/client/#{username}/order"), params, 'invalid_menu')
 
       expect { client.order(username, params[:order]) }
         .to raise_error('Menú inválido')
+    end
+
+    it 'not registered client orders a valid menu' do
+      username = 'pepito_p'
+      params = { order: 'menu_individual' }
+
+      stub_failed_post(endpoint("/client/#{username}/order"), params, 'client_not_exist')
+
+      expect { client.order(username, params[:order]) }
+        .to raise_error('Primero debes registrarte')
     end
   end
 
@@ -171,6 +181,16 @@ describe 'ApiClient' do
       expect { client.order_status(username, order_id) }
         .to raise_error('Todavía no has realizado pedidos')
     end
+
+    it 'not registered client asks for order id status and fails' do
+      username = 'pepito_no_existe'
+      order_id = 2
+
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'client_not_exist')
+
+      expect { client.order_status(username, order_id) }
+        .to raise_error('Primero debes registrarte')
+    end
   end
 
   describe 'order rate' do
@@ -211,6 +231,18 @@ describe 'ApiClient' do
 
       expect { client.order_rate(username, order_id, params[:rating]) }
         .to raise_error("La calificación '-14' no es válida, ingresa un número entre 1 y 5")
+    end
+
+    it 'not registered user fails to rate an order' do
+      username = 'pepito_p'
+      order_id = 2
+
+      params = { rating: 4 }
+
+      stub_failed_post(endpoint("/client/#{username}/order/#{order_id}/rate"), params, 'client_not_exist')
+
+      expect { client.order_rate(username, order_id, params[:rating]) }
+        .to raise_error('Primero debes registrarte')
     end
     # rubocop:enable RSpec/ExampleLength:
   end

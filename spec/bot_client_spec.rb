@@ -150,6 +150,17 @@ describe 'BotClient' do
       app.run_once
     end
     # rubocop:enable RSpec/ExampleLength
+
+    it 'should get a /pedido message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:order).with('chambriento', 'menu_pareja').and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/pedido menu_pareja')
+      stub_send_message(token, 'Pedido fallido: Primero debes registrarte')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 
   describe 'status' do
@@ -169,6 +180,17 @@ describe 'BotClient' do
 
       stub_get_updates(token, '/estado 500')
       stub_send_message(token, 'Consulta fallida: El pedido indicado no existe')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /estado message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:order_status).with('chambriento', 1).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/estado 1')
+      stub_send_message(token, 'Consulta fallida: Primero debes registrarte')
 
       app = BotClient.new(api_client, token)
 
@@ -210,6 +232,17 @@ describe 'BotClient' do
 
       stub_get_updates(token, '/calificar 10 4')
       stub_send_message(token, 'El pedido solo puede calificarse una vez ENTREGADO')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /calificar message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:order_rate).with('chambriento', 10, 4).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/calificar 10 4')
+      stub_send_message(token, 'Primero debes registrarte')
 
       app = BotClient.new(api_client, token)
 
