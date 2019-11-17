@@ -128,7 +128,7 @@ describe 'ApiClient' do
       username = 'pepito_p'
       params = { order: 'menu_individual' }
 
-      stub_failed_post(endpoint("/client/#{username}/order"), params, 'client_not_exist')
+      stub_failed_post(endpoint("/client/#{username}/order"), params, 'not_registered')
 
       expect { client.order(username, params[:order]) }
         .to raise_error('Primero debes registrarte')
@@ -186,7 +186,7 @@ describe 'ApiClient' do
       username = 'pepito_no_existe'
       order_id = 2
 
-      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'client_not_exist')
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'not_registered')
 
       expect { client.order_status(username, order_id) }
         .to raise_error('Primero debes registrarte')
@@ -239,7 +239,7 @@ describe 'ApiClient' do
 
       params = { rating: 4 }
 
-      stub_failed_post(endpoint("/client/#{username}/order/#{order_id}/rate"), params, 'client_not_exist')
+      stub_failed_post(endpoint("/client/#{username}/order/#{order_id}/rate"), params, 'not_registered')
 
       expect { client.order_rate(username, order_id, params[:rating]) }
         .to raise_error('Primero debes registrarte')

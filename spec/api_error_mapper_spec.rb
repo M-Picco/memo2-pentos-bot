@@ -63,9 +63,9 @@ describe 'ApiErrorMapper' do
     expect(mapper.map('invalid_menu')).to eq('Menú inválido')
   end
 
-  it 'maps client_not_exist to its counterpart' do
+  it 'maps not_registered to its counterpart' do
     mapper = ApiErrorMapper.new
 
-    expect(mapper.map('client_not_exist')).to eq('Primero debes registrarte')
+    expect(mapper.map('not_registered')).to eq('Primero debes registrarte')
   end
 end
