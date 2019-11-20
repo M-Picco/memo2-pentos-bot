@@ -2,7 +2,8 @@ require 'telegram/bot'
 require File.dirname(__FILE__) + '/../app/routes'
 
 class BotClient
-  def initialize(token = ENV['TELEGRAM_TOKEN'])
+  def initialize(api_client, token = ENV['TELEGRAM_TOKEN'])
+    @api_client = api_client
     @token = token
     @logger = Logger.new(STDOUT)
   end
@@ -29,6 +30,7 @@ class BotClient
   def handle_message(message, bot)
     @logger.debug "@#{message.from.username}: #{message.inspect}"
 
-    Routes.new.handle(bot, message)
+    routes = Routes.new(@api_client)
+    routes.handle(bot, message)
   end
 end
