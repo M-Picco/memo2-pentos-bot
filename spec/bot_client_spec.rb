@@ -114,9 +114,9 @@ describe 'BotClient' do
     end
 
     it 'should get a /registracion message for already registered client and return an error message' do
-      allow(api_client).to receive(:register).with('chambriento', '', '4123-4123').and_raise('Ya se encuentra registrado')
+      allow(api_client).to receive(:register).with('chambriento', 'Cucha Cucha 1234 1 Piso B', '4123-4123').and_raise('Ya se encuentra registrado')
 
-      stub_get_updates(token, '/registracion ,4123-4123')
+      stub_get_updates(token, '/registracion Cucha Cucha 1234 1 Piso B,4123-4123')
       stub_send_message(token, 'Registración fallida: Ya se encuentra registrado')
 
       app = BotClient.new(api_client, token)
