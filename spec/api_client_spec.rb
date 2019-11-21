@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/../app/api_client'
 def stub_req(url, body, ret_body, code)
   stub_request(:post, url)
     .with(
-      body: body, headers: { 'Content-Type' => 'application/json' }
+      body: body, headers: { 'Content-Type' => 'application/json', 'api-key': (ENV['API_KEY'] || 'zaraza') }
     )
     .to_return(body: ret_body, status: code)
 end
