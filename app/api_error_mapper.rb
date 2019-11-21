@@ -12,7 +12,8 @@ class ApiErrorMapper
     'order_not_delivered' => 'El pedido solo puede calificarse una vez ENTREGADO',
     'invalid_rating' => "La calificación '%s' no es válida, ingresa un número entre 1 y 5",
     'invalid_menu' => 'Menú inválido',
-    'not_registered' => 'Primero debes registrarte'
+    'not_registered' => 'Primero debes registrarte',
+    'already_registered' => 'Ya se encuentra registrado'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze
