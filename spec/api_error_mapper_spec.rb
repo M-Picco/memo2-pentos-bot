@@ -68,4 +68,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('not_registered')).to eq('Primero debes registrarte')
   end
+
+  it 'maps already_registered to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('already_registered')).to eq('Ya se encuentra registrado')
+  end
 end
