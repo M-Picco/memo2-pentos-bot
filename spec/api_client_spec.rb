@@ -36,6 +36,10 @@ def stub_success_put(url, body, ret_body)
   stub_put(url, body.to_json, ret_body.to_json, 200)
 end
 
+def stub_failed_put(url, body, error_message)
+  stub_put(url, body.to_json, { error: error_message }.to_json, 400)
+end
+
 ###################################
 def stub_success_get(url, ret_body)
   stub_request(:get, url)
@@ -275,6 +279,18 @@ describe 'ApiClient' do
       res = client.order_cancel(username, order_id)
 
       expect(res).to eq('Pedido cancelado con éxito')
+    end
+
+    it 'fails to cancel a no longer cancellable order' do
+      username = 'pepito_p'
+      order_id = 2
+
+      params = {}
+
+      stub_failed_put(endpoint("/order/#{order_id}/cancel"), params, 'cannot_cancel')
+
+      expect { client.order_cancel(username, order_id) }
+        .to raise_error('El pedido ya no puede cancelarse')
     end
     # rubocop:enable RSpec/ExampleLength:
   end

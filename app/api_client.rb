@@ -65,9 +65,12 @@ class ApiClient
   end
 
   def order_cancel(_username, order_id)
-    Faraday.put(endpoint("/order/#{order_id}/cancel"), {}.to_json, header)
+    response = Faraday.put(endpoint("/order/#{order_id}/cancel"), {}.to_json, header)
 
-    'Pedido cancelado con éxito'
+    return 'Pedido cancelado con éxito' if response.status == 200
+
+    body = JSON.parse(response.body)
+    raise @error_mapper.map(body['error']) if response.status == 400
   end
 
   private
