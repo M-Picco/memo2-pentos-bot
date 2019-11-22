@@ -3,7 +3,7 @@ require 'web_mock'
 
 require File.dirname(__FILE__) + '/../app/api_client'
 
-def stub_req(url, body, ret_body, code)
+def stub_post(url, body, ret_body, code)
   stub_request(:post, url)
     .with(
       body: body, headers: { 'Content-Type' => 'application/json', 'api-key': (ENV['API_KEY'] || 'zaraza') }
@@ -11,6 +11,32 @@ def stub_req(url, body, ret_body, code)
     .to_return(body: ret_body, status: code)
 end
 
+def stub_success_post(url, body, ret_body)
+  stub_post(url, body.to_json, ret_body.to_json, 200)
+end
+
+def stub_failed_post(url, body, error_message)
+  stub_post(url, body.to_json, { error: error_message }.to_json, 400)
+end
+
+def stub_server_error_post(url, body)
+  stub_post(url, body.to_json, {}.to_json, 500)
+end
+
+###################################
+def stub_put(url, body, ret_body, code)
+  stub_request(:put, url)
+    .with(
+      body: body, headers: { 'Content-Type' => 'application/json', 'api-key': (ENV['API_KEY'] || 'zaraza') }
+    )
+    .to_return(body: ret_body, status: code)
+end
+
+def stub_success_put(url, body, ret_body)
+  stub_put(url, body.to_json, ret_body.to_json, 200)
+end
+
+###################################
 def stub_success_get(url, ret_body)
   stub_request(:get, url)
     .to_return(body: ret_body.to_json, status: 200)
@@ -19,18 +45,6 @@ end
 def stub_failed_get(url, error_message)
   stub_request(:get, url)
     .to_return(body: { error: error_message }.to_json, status: 400)
-end
-
-def stub_success_post(url, body, ret_body)
-  stub_req(url, body.to_json, ret_body.to_json, 200)
-end
-
-def stub_failed_post(url, body, error_message)
-  stub_req(url, body.to_json, { error: error_message }.to_json, 400)
-end
-
-def stub_server_error_post(url, body)
-  stub_req(url, body.to_json, {}.to_json, 500)
 end
 
 describe 'ApiClient' do
@@ -243,6 +257,24 @@ describe 'ApiClient' do
 
       expect { client.order_rate(username, order_id, params[:rating]) }
         .to raise_error('Primero debes registrarte')
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
+
+  describe 'order cancel' do
+    # rubocop:disable RSpec/ExampleLength:
+    it 'cancels a cancellable order' do
+      username = 'pepito_p'
+      order_id = 2
+
+      params = {}
+      response = {}
+
+      stub_success_put(endpoint("/order/#{order_id}/cancel"), params, response)
+
+      res = client.order_cancel(username, order_id)
+
+      expect(res).to eq('Pedido cancelado con éxito')
     end
     # rubocop:enable RSpec/ExampleLength:
   end
