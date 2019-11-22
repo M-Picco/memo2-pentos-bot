@@ -79,8 +79,14 @@ class Routes
   on_message_pattern %r{\/cancelar (?<id_pedido>.*)} do |bot, message, args|
     user = message.from.username || ''
 
-    @api_client.order_cancel(user, args['id_pedido'].strip.to_i)
-    bot.api.send_message(chat_id: message.chat.id, text: 'Pedido cancelado con éxito')
+    begin
+      @api_client.order_cancel(user, args['id_pedido'].strip.to_i)
+      bot.api.send_message(chat_id: message.chat.id, text: 'Pedido cancelado con éxito')
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      bot.api.send_message(chat_id: message.chat.id, text: e.message)
+    end
   end
 
   default do |bot, message|

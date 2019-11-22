@@ -273,6 +273,20 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    # rubocop:disable RSpec/ExampleLength:
+    it 'should get a /cancelar message from a registered user with an order that can no longer be cancelled
+        and respond with a success message' do
+      expect(api_client).to receive(:order_cancel).with('chambriento', 10).and_raise('El pedido ya no puede cancelarse')
+
+      stub_get_updates(token, '/cancelar 10')
+      stub_send_message(token, 'El pedido ya no puede cancelarse')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
   end
 
   describe 'default message' do
