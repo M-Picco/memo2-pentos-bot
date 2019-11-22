@@ -76,6 +76,13 @@ class Routes
     end
   end
 
+  on_message_pattern %r{\/cancelar (?<id_pedido>.*)} do |bot, message, args|
+    user = message.from.username || ''
+
+    @api_client.order_cancel(user, args['id_pedido'].strip.to_i)
+    bot.api.send_message(chat_id: message.chat.id, text: 'Pedido cancelado con éxito')
+  end
+
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n
