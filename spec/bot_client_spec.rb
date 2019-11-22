@@ -287,6 +287,17 @@ describe 'BotClient' do
       app.run_once
     end
     # rubocop:enable RSpec/ExampleLength:
+
+    it 'should get a /cancel message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:order_cancel).with('chambriento', 10).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/cancelar 10')
+      stub_send_message(token, 'Primero debes registrarte')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 
   describe 'default message' do
