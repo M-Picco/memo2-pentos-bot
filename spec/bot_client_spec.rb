@@ -309,7 +309,8 @@ describe 'BotClient' do
     Pedidos disponibles: menu_individual, menu_pareja y menu_familiar\n
     -/estado {nro_pedido}\n
     - /estado {nro_pedido}\n
-    - /calificar {nro_pedido} {calificación}"
+    - /calificar {nro_pedido} {calificación}\n
+    - /cancelar {nro_pedido}"
 
       stub_get_updates(token, '/un_comando_invalido')
       stub_send_message(token, help_message)
