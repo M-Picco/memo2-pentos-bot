@@ -3,7 +3,8 @@ class ApiStatusMapper
     'recibido' => 'ha sido RECIBIDO',
     'en_preparacion' => 'esta EN PREPARACION',
     'en_entrega' => 'esta EN ENTREGA',
-    'entregado' => 'esta ENTREGADO'
+    'entregado' => 'esta ENTREGADO',
+    'cancelado' => 'esta CANCELADO'
   }.freeze
 
   GENERIC_MESSAGE = 'Estado desconocido'.freeze
