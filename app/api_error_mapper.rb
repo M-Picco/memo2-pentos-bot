@@ -13,7 +13,8 @@ class ApiErrorMapper
     'invalid_rating' => "La calificación '%s' no es válida, ingresa un número entre 1 y 5",
     'invalid_menu' => 'Menú inválido',
     'not_registered' => 'Primero debes registrarte',
-    'already_registered' => 'Ya se encuentra registrado'
+    'already_registered' => 'Ya se encuentra registrado',
+    'cannot_cancel' => 'El pedido ya no puede cancelarse'
   }.freeze
 
   GENERIC_MESSAGE = 'Error inesperado, espere y vuelva a intentarlo'.freeze

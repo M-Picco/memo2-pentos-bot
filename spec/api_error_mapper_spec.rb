@@ -74,4 +74,10 @@ describe 'ApiErrorMapper' do
 
     expect(mapper.map('already_registered')).to eq('Ya se encuentra registrado')
   end
+
+  it 'maps cannot_cancel to its counterpart' do
+    mapper = ApiErrorMapper.new
+
+    expect(mapper.map('cannot_cancel')).to eq('El pedido ya no puede cancelarse')
+  end
 end

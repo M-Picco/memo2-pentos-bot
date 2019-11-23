@@ -64,6 +64,17 @@ class ApiClient
     raise @error_mapper.map(body['error'], [rating]) if response.status == 400
   end
 
+  def order_cancel(_username, order_id)
+    response = Faraday.put(endpoint("/order/#{order_id}/cancel"), {}.to_json, header)
+
+    return 'Pedido cancelado con éxito' if response.status == 200
+
+    body = JSON.parse(response.body)
+    raise @error_mapper.map(body['error']) if response.status == 400
+
+    raise @error_mapper.map('server_error')
+  end
+
   private
 
   def endpoint(route)

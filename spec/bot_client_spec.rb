@@ -262,6 +262,44 @@ describe 'BotClient' do
     # rubocop:enable RSpec/ExampleLength:
   end
 
+  describe 'cancel' do
+    it 'should get a /cancelar message from a registered user and respond with a success message' do
+      expect(api_client).to receive(:order_cancel).with('chambriento', 10).and_return('Pedido cancelado con éxito')
+
+      stub_get_updates(token, '/cancelar 10')
+      stub_send_message(token, 'Pedido cancelado con éxito')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    # rubocop:disable RSpec/ExampleLength:
+    it 'should get a /cancelar message from a registered user with an order that can no longer be cancelled
+        and respond with a success message' do
+      expect(api_client).to receive(:order_cancel).with('chambriento', 10).and_raise('El pedido ya no puede cancelarse')
+
+      stub_get_updates(token, '/cancelar 10')
+      stub_send_message(token, 'El pedido ya no puede cancelarse')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+    # rubocop:enable RSpec/ExampleLength:
+
+    it 'should get a /cancel message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:order_cancel).with('chambriento', 10).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/cancelar 10')
+      stub_send_message(token, 'Primero debes registrarte')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
+
   describe 'default message' do
     # rubocop:disable RSpec/ExampleLength:
     it 'responds with a help message when no valid commands supplied' do
@@ -271,7 +309,8 @@ describe 'BotClient' do
     Pedidos disponibles: menu_individual, menu_pareja y menu_familiar\n
     -/estado {nro_pedido}\n
     - /estado {nro_pedido}\n
-    - /calificar {nro_pedido} {calificación}"
+    - /calificar {nro_pedido} {calificación}\n
+    - /cancelar {nro_pedido}"
 
       stub_get_updates(token, '/un_comando_invalido')
       stub_send_message(token, help_message)
