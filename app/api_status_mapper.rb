@@ -4,7 +4,8 @@ class ApiStatusMapper
     'en_preparacion' => 'esta EN PREPARACION',
     'en_entrega' => 'esta EN ENTREGA',
     'entregado' => 'esta ENTREGADO',
-    'cancelado' => 'esta CANCELADO'
+    'cancelado' => 'esta CANCELADO',
+    'en_espera' => 'esta EN ESPERA'
   }.freeze
 
   GENERIC_MESSAGE = 'Estado desconocido'.freeze

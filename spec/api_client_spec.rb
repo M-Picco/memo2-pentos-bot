@@ -182,6 +182,18 @@ describe 'ApiClient' do
 
       expect(order_status).to eq('esta EN PREPARACION')
     end
+
+    it 'registered client ask for order id status and obtains "esta EN ESPERA"' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { order_status: 'en_espera' }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      order_status = client.order_status(username, order_id)
+
+      expect(order_status).to eq('esta EN ESPERA')
+    end
     # rubocop:enable RSpec/ExampleLength
 
     it 'registered client ask for non existent order id status and fails' do
