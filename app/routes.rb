@@ -92,10 +92,14 @@ class Routes
   on_message '/historico' do |bot, message|
     user = message.from.username || ''
 
-    historical_orders = @api_client.historical_orders(user)
-    text = historical_message(historical_orders)
-
-    bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:\n#{text}")
+    begin
+      historical_orders = @api_client.historical_orders(user)
+      text = historical_message(historical_orders)
+      bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:\n#{text}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+      bot.api.send_message(chat_id: message.chat.id, text: e.message)
+    end
   end
 
   def historical_message(orders_message)

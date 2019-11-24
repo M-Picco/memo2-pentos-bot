@@ -55,6 +55,11 @@ def stub_failed_get(url, error_message)
     .to_return(body: { error: error_message }.to_json, status: 400)
 end
 
+def stub_server_error_get(url)
+  stub_request(:get, url)
+    .to_return(body: {}.to_json, status: 500)
+end
+
 describe 'ApiClient' do
   let(:base_url) { 'http://base_url' }
   let(:client) { ApiClient.new(base_url) }
@@ -341,7 +346,7 @@ describe 'ApiClient' do
 
       historical_orders = client.historical_orders(username)
 
-      expect(historical_orders).to eq(['No tiene pedidos'])
+      expect(historical_orders).to eq(['No tiene pedidos completos'])
     end
 
     it 'registered client with orders ask for historical orders and obtains some information' do
@@ -358,6 +363,15 @@ describe 'ApiClient' do
       historical_orders = client.historical_orders(username)
 
       expect(historical_orders).to eq(expected_format)
+    end
+
+    it 'fails to get historical orders due to server error' do
+      username = 'pepito_p'
+
+      stub_server_error_get(endpoint("/client/#{username}/historical"))
+
+      expect { client.historical_orders(username) }
+        .to raise_error('Error del servidor, espere y vuelva a intentarlo')
     end
     # rubocop:enable RSpec/ExampleLength:
   end
