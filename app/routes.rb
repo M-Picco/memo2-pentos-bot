@@ -95,13 +95,13 @@ class Routes
     historical_orders = @api_client.historical_orders(user)
     text = historical_message(historical_orders)
 
-    bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:#{text}")
+    bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:\n#{text}")
   end
 
   def historical_message(orders_message)
     text = ''
     orders_message.each do |order_information|
-      text += "\n====================\n"
+      text += "====================\n"
       text += order_information
     end
 
