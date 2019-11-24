@@ -86,6 +86,14 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
+  def estimated_time(username, order_id)
+    response = Faraday.get(endpoint("/client/#{username}/order/#{order_id}"), {}, header)
+
+    body = JSON.parse(response.body)
+
+    return "#{body['estimated_delivery_time']} minutos" if response.status == 200
+  end
+
   private
 
   def endpoint(route)

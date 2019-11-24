@@ -375,4 +375,20 @@ describe 'ApiClient' do
     end
     # rubocop:enable RSpec/ExampleLength:
   end
+
+  describe 'estimate order time' do
+    # rubocop:disable RSpec/ExampleLength:
+    it 'estimated delivery time for existing order' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { estimated_delivery_time: 30 }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      estimed_time = client.estimated_time(username, order_id)
+
+      expect(estimed_time).to eq('30 minutos')
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
 end
