@@ -75,6 +75,12 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
+  def historical_orders(username)
+    response = Faraday.get(endpoint("/client/#{username}/historical"), {}, header)
+    response_parsed = JSON.parse(response.body)
+    return 'No tiene pedidos' if response_parsed.empty?
+  end
+
   private
 
   def endpoint(route)

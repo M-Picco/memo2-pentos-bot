@@ -330,4 +330,17 @@ describe 'ApiClient' do
     end
     # rubocop:enable RSpec/ExampleLength:
   end
+
+  describe 'historical orders' do
+    it 'registered client without orders ask for historical orders and obtains "No tiene pedidos"' do
+      username = 'pepito_p'
+      response = []
+
+      stub_success_get(endpoint("/client/#{username}/historical"), response)
+
+      historical_orders = client.historical_orders(username)
+
+      expect(historical_orders).to eq('No tiene pedidos')
+    end
+  end
 end
