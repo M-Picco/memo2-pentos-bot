@@ -97,16 +97,11 @@ class ApiClient
   end
 
   def format_orders(orders)
-    format_orders = []
-    orders.each do |order|
-      text_info = ''
-      text_info += "Nro : #{order['id']}\n"
-      text_info += "Dia : #{order['date']}\n"
-      text_info += "Menú : #{order['menu']}\n"
-      text_info += "Repartidor : #{order['assigned_to']}\n"
-      format_orders << text_info
+    orders.map do |order|
+      "Nro : #{order['id']}\n" \
+        "Dia : #{order['date']}\n" \
+        "Menú : #{order['menu']}\n" \
+        "Repartidor : #{order['assigned_to']}\n"
     end
-
-    format_orders
   end
 end
