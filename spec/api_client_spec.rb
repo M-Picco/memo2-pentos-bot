@@ -341,7 +341,7 @@ describe 'ApiClient' do
 
       historical_orders = client.historical_orders(username)
 
-      expect(historical_orders).to eq('No tiene pedidos')
+      expect(historical_orders).to eq(['No tiene pedidos'])
     end
 
     it 'registered client with orders ask for historical orders and obtains some information' do

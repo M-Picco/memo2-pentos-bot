@@ -79,7 +79,7 @@ class ApiClient
     response = Faraday.get(endpoint("/client/#{username}/historical"), {}, header)
     body = JSON.parse(response.body)
 
-    return 'No tiene pedidos' if body.empty? && response.status == 200
+    return ['No tiene pedidos'] if body.empty? && response.status == 200
 
     return format_orders(body) if response.status == 200
   end
