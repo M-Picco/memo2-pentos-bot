@@ -335,6 +335,17 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /estimado message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 1).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/estimado 1')
+      stub_send_message(token, 'Consulta fallida: Primero debes registrarte')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 
   describe 'default message' do
