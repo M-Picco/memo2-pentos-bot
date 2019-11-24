@@ -135,7 +135,8 @@ class Routes
     - /estado {nro_pedido}\n
     - /calificar {nro_pedido} {calificación}\n
     - /cancelar {nro_pedido}\n
-    - /historico"
+    - /historico\n
+    - /estimado {nro_pedido}"
 
     bot.api.send_message(chat_id: message.chat.id, text: help_message)
   end

@@ -359,7 +359,8 @@ describe 'BotClient' do
     - /estado {nro_pedido}\n
     - /calificar {nro_pedido} {calificación}\n
     - /cancelar {nro_pedido}\n
-    - /historico"
+    - /historico\n
+    - /estimado {nro_pedido}"
 
       stub_get_updates(token, '/un_comando_invalido')
       stub_send_message(token, help_message)
