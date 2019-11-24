@@ -89,6 +89,25 @@ class Routes
     end
   end
 
+  on_message '/historico' do |bot, message|
+    user = message.from.username || ''
+
+    historical_orders = @api_client.historical_orders(user)
+    text = historical_message(historical_orders)
+
+    bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:#{text}")
+  end
+
+  def historical_message(orders_message)
+    text = ''
+    orders_message.each do |order_information|
+      text += "\n====================\n"
+      text += order_information
+    end
+
+    text
+  end
+
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n

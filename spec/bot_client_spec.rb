@@ -300,6 +300,19 @@ describe 'BotClient' do
     end
   end
 
+  describe 'historical orders' do
+    it 'should get a /historico message from a registered user and shows historical information' do
+      expect(api_client).to receive(:historical_orders).with('chambriento').and_return(['No tiene pedidos'])
+
+      stub_get_updates(token, '/historico')
+      stub_send_message(token, "Historial de pedidos:\n====================\nNo tiene pedidos")
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
+
   describe 'default message' do
     # rubocop:disable RSpec/ExampleLength:
     it 'responds with a help message when no valid commands supplied' do
