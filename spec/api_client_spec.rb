@@ -396,8 +396,18 @@ describe 'ApiClient' do
 
       stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'not_registered')
 
-      expect { client.order_status(username, order_id) }
+      expect { client.estimated_time(username, order_id) }
         .to raise_error('Primero debes registrarte')
+    end
+
+    it 'registered client ask estimated delivery time for non existent order id and fails' do
+      username = 'pepito_p'
+      order_id = 500
+
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'order not exist')
+
+      expect { client.estimated_time(username, order_id) }
+        .to raise_error('El pedido indicado no existe')
     end
     # rubocop:enable RSpec/ExampleLength:
   end
