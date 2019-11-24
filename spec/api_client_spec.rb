@@ -409,6 +409,16 @@ describe 'ApiClient' do
       expect { client.estimated_time(username, order_id) }
         .to raise_error('El pedido indicado no existe')
     end
+
+    it 'fails to get estimated time due to server error' do
+      username = 'pepito_p'
+      order_id = 2
+
+      stub_server_error_get(endpoint("/client/#{username}/order/#{order_id}"))
+
+      expect { client.estimated_time(username, order_id) }
+        .to raise_error('Error del servidor, espere y vuelva a intentarlo')
+    end
     # rubocop:enable RSpec/ExampleLength:
   end
 end

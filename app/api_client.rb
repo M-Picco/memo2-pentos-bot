@@ -93,6 +93,8 @@ class ApiClient
     return "#{body['estimated_delivery_time']} minutos" if response.status == 200
 
     raise @error_mapper.map(body['error']) if response.status == 400
+
+    raise @error_mapper.map('server_error')
   end
 
   private
