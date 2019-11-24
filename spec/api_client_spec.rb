@@ -332,6 +332,7 @@ describe 'ApiClient' do
   end
 
   describe 'historical orders' do
+    # rubocop:disable RSpec/ExampleLength:
     it 'registered client without orders ask for historical orders and obtains "No tiene pedidos"' do
       username = 'pepito_p'
       response = []
@@ -342,5 +343,22 @@ describe 'ApiClient' do
 
       expect(historical_orders).to eq('No tiene pedidos')
     end
+
+    it 'registered client with orders ask for historical orders and obtains some information' do
+      username = 'pepito_p'
+      response = [{ "id": 9679, "menu": 'menu_individual', "assigned_to": 'juanmotoneta', "date": '2019-11-24' },
+                  { "id": 9680, "menu": 'menu_pareja', "assigned_to": 'juanmotoneta', "date": '2019-11-24' }]
+
+      expected_format =  []
+      expected_format << "Nro : 9679\nDia : 2019-11-24\nMenú : menu_individual\nRepartidor : juanmotoneta\n"
+      expected_format << "Nro : 9680\nDia : 2019-11-24\nMenú : menu_pareja\nRepartidor : juanmotoneta\n"
+
+      stub_success_get(endpoint("/client/#{username}/historical"), response)
+
+      historical_orders = client.historical_orders(username)
+
+      expect(historical_orders).to eq(expected_format)
+    end
+    # rubocop:enable RSpec/ExampleLength:
   end
 end

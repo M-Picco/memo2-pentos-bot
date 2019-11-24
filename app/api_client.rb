@@ -77,8 +77,11 @@ class ApiClient
 
   def historical_orders(username)
     response = Faraday.get(endpoint("/client/#{username}/historical"), {}, header)
-    response_parsed = JSON.parse(response.body)
-    return 'No tiene pedidos' if response_parsed.empty?
+    body = JSON.parse(response.body)
+
+    return 'No tiene pedidos' if body.empty? && response.status == 200
+
+    return format_orders(body) if response.status == 200
   end
 
   private
@@ -89,5 +92,19 @@ class ApiClient
 
   def header
     { 'Content-Type' => 'application/json', 'api-key' => @api_key }
+  end
+
+  def format_orders(orders)
+    format_orders = []
+    orders.each do |order|
+      text_info = ''
+      text_info += "Nro : #{order['id']}\n"
+      text_info += "Dia : #{order['date']}\n"
+      text_info += "Menú : #{order['menu']}\n"
+      text_info += "Repartidor : #{order['assigned_to']}\n"
+      format_orders << text_info
+    end
+
+    format_orders
   end
 end
