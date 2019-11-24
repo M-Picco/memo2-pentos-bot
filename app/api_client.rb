@@ -75,6 +75,17 @@ class ApiClient
     raise @error_mapper.map('server_error')
   end
 
+  def historical_orders(username)
+    response = Faraday.get(endpoint("/client/#{username}/historical"), {}, header)
+    body = JSON.parse(response.body)
+
+    return ['No tiene pedidos completos'] if body.empty? && response.status == 200
+
+    return format_orders(body) if response.status == 200
+
+    raise @error_mapper.map('server_error')
+  end
+
   private
 
   def endpoint(route)
@@ -83,5 +94,14 @@ class ApiClient
 
   def header
     { 'Content-Type' => 'application/json', 'api-key' => @api_key }
+  end
+
+  def format_orders(orders)
+    orders.map do |order|
+      "Nro : #{order['id']}\n" \
+        "Dia : #{order['date']}\n" \
+        "Menú : #{order['menu']}\n" \
+        "Repartidor : #{order['assigned_to']}\n"
+    end
   end
 end

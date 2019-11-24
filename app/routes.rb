@@ -89,6 +89,29 @@ class Routes
     end
   end
 
+  on_message '/historico' do |bot, message|
+    user = message.from.username || ''
+
+    begin
+      historical_orders = @api_client.historical_orders(user)
+      text = historical_message(historical_orders)
+      bot.api.send_message(chat_id: message.chat.id, text: "Historial de pedidos:\n#{text}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+      bot.api.send_message(chat_id: message.chat.id, text: e.message)
+    end
+  end
+
+  def historical_message(orders_message)
+    text = ''
+    orders_message.each do |order_information|
+      text += "====================\n"
+      text += order_information
+    end
+
+    text
+  end
+
   default do |bot, message|
     help_message = "Comando no reconocido. Estos son los comandos disponibles\n
     - /registracion {dirección},{teléfono}\n
@@ -97,7 +120,8 @@ class Routes
     -/estado {nro_pedido}\n
     - /estado {nro_pedido}\n
     - /calificar {nro_pedido} {calificación}\n
-    - /cancelar {nro_pedido}"
+    - /cancelar {nro_pedido}\n
+    - /historico"
 
     bot.api.send_message(chat_id: message.chat.id, text: help_message)
   end
