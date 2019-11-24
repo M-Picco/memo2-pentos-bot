@@ -105,8 +105,16 @@ class Routes
 
   on_message_pattern %r{\/estimado (?<id_pedido>.*)} do |bot, message, args|
     user = message.from.username || ''
-    estimated_time = @api_client.estimated_time(user, args['id_pedido'].strip.to_i)
-    bot.api.send_message(chat_id: message.chat.id, text: "Tiempo estimado: #{estimated_time}")
+
+    begin
+      estimated_time = @api_client.estimated_time(user, args['id_pedido'].strip.to_i)
+      bot.api.send_message(chat_id: message.chat.id, text: "Tiempo estimado: #{estimated_time}")
+    rescue StandardError => e
+      @logger.debug e.backtrace
+
+      text = "Consulta fallida: #{e}"
+      bot.api.send_message(chat_id: message.chat.id, text: text)
+    end
   end
 
   def historical_message(orders_message)

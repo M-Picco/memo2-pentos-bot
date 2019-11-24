@@ -324,6 +324,17 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'should get a /estimado message from a registered user for an inexistent order and respond with an error message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 500).and_raise('El pedido indicado no existe')
+
+      stub_get_updates(token, '/estimado 500')
+      stub_send_message(token, 'Consulta fallida: El pedido indicado no existe')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
   end
 
   describe 'default message' do
