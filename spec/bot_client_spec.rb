@@ -313,6 +313,19 @@ describe 'BotClient' do
     end
   end
 
+  describe 'estimated time' do
+    it 'should get a /estimado message from a registered user with and respond with a success message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 1).and_return('40 minutos')
+
+      stub_get_updates(token, '/estimado 1')
+      stub_send_message(token, 'Tiempo estimado: 40 minutos')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
+
   describe 'default message' do
     # rubocop:disable RSpec/ExampleLength:
     it 'responds with a help message when no valid commands supplied' do
