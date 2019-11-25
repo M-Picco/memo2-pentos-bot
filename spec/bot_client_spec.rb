@@ -313,6 +313,41 @@ describe 'BotClient' do
     end
   end
 
+  describe 'estimated time' do
+    it 'should get a /estimado message from a registered user with and respond with a success message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 1).and_return('40 minutos')
+
+      stub_get_updates(token, '/estimado 1')
+      stub_send_message(token, 'Tiempo estimado: 40 minutos')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /estimado message from a registered user for an inexistent order and respond with an error message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 500).and_raise('El pedido indicado no existe')
+
+      stub_get_updates(token, '/estimado 500')
+      stub_send_message(token, 'Consulta fallida: El pedido indicado no existe')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+
+    it 'should get a /estimado message from an unregistered user and respond with a not registered message' do
+      expect(api_client).to receive(:estimated_time).with('chambriento', 1).and_raise('Primero debes registrarte')
+
+      stub_get_updates(token, '/estimado 1')
+      stub_send_message(token, 'Consulta fallida: Primero debes registrarte')
+
+      app = BotClient.new(api_client, token)
+
+      app.run_once
+    end
+  end
+
   describe 'default message' do
     # rubocop:disable RSpec/ExampleLength:
     it 'responds with a help message when no valid commands supplied' do
@@ -324,7 +359,8 @@ describe 'BotClient' do
     - /estado {nro_pedido}\n
     - /calificar {nro_pedido} {calificación}\n
     - /cancelar {nro_pedido}\n
-    - /historico"
+    - /historico\n
+    - /estimado {nro_pedido}"
 
       stub_get_updates(token, '/un_comando_invalido')
       stub_send_message(token, help_message)

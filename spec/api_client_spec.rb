@@ -375,4 +375,50 @@ describe 'ApiClient' do
     end
     # rubocop:enable RSpec/ExampleLength:
   end
+
+  describe 'estimate order time' do
+    # rubocop:disable RSpec/ExampleLength:
+    it 'registerd client ask for estimated delivery time of existing order' do
+      username = 'pepito_p'
+      order_id = 1
+      response = { estimated_delivery_time: 30 }
+
+      stub_success_get(endpoint("/client/#{username}/order/#{order_id}"), response)
+
+      estimed_time = client.estimated_time(username, order_id)
+
+      expect(estimed_time).to eq('30 minutos')
+    end
+
+    it 'not registered client ask for estimated delivery time and fails' do
+      username = 'pepito_no_existe'
+      order_id = 2
+
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'not_registered')
+
+      expect { client.estimated_time(username, order_id) }
+        .to raise_error('Primero debes registrarte')
+    end
+
+    it 'registered client ask estimated delivery time for non existent order id and fails' do
+      username = 'pepito_p'
+      order_id = 500
+
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'order not exist')
+
+      expect { client.estimated_time(username, order_id) }
+        .to raise_error('El pedido indicado no existe')
+    end
+
+    it 'fails to get estimated time due to server error' do
+      username = 'pepito_p'
+      order_id = 2
+
+      stub_server_error_get(endpoint("/client/#{username}/order/#{order_id}"))
+
+      expect { client.estimated_time(username, order_id) }
+        .to raise_error('Error del servidor, espere y vuelva a intentarlo')
+    end
+    # rubocop:enable RSpec/ExampleLength:
+  end
 end
