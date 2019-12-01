@@ -8,7 +8,6 @@ class ApiErrorMapper
                         '(Verifique username en la configuración de Telegram. ' \
                         'Verifique que el comando fue correctamente ingresado.)',
     'order not exist' => 'El pedido indicado no existe',
-    'there are no orders' => 'Todavía no has realizado pedidos',
     'order_not_delivered' => 'El pedido solo puede calificarse una vez ENTREGADO',
     'invalid_rating' => "La calificación '%s' no es válida, ingresa un número entre 1 y 5",
     'invalid_menu' => 'Menú inválido',

@@ -215,10 +215,10 @@ describe 'ApiClient' do
       username = 'pepito_sin_ordenes'
       order_id = 2
 
-      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'there are no orders')
+      stub_failed_get(endpoint("/client/#{username}/order/#{order_id}"), 'order not exist')
 
       expect { client.order_status(username, order_id) }
-        .to raise_error('Todavía no has realizado pedidos')
+        .to raise_error('El pedido indicado no existe')
     end
 
     it 'not registered client asks for order id status and fails' do
